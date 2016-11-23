@@ -1,9 +1,9 @@
 ### AutoNTier : Automated N-Tier infrastructure creation using Ansible, Vagrant & VirtualBox
 
 ###  Technical Components
-     Vagrant     : environment creation & control
-     Virtual Box : hypervisor
-     Ansible     : change mgmt, provisioning, automation & orchestration
+     Vagrant     : environment creation & control      https://www.vagrantup.com & https://www.vagrantcloud.com
+     Virtual Box : hypervisor      https://www.virtualbox.org
+     Ansible     : change mgmt, provisioning, automation & orchestration        http://docs.ansible.com
 
 ###  How to create VM(s) and install Ansible
      From command prompt run the following commands
@@ -20,7 +20,7 @@
      web : 192.168.33.20  ##web server
      db  : 192.168.33.30  ##database host
 
-###  How to use setup Ansible on the VM(s) created in previous steps
+###  Setup Ansible on the VM(s) created in previous steps
      From command prompt run the following commands
      1. ssh vagrant acs  #to login to Ansible control server
      2. ssh vagrant@ip-address-of-web-server #this will add this host fingerprint to list of know hosts
@@ -30,7 +30,12 @@
      6. ansible 192.168.33.20 -i inventory -u vagrant -m ping -k -vvv #verbose mode
      7. ansible 192.168.33.20 -i inventory -u vagrant -m command -a "/usr/sbin/yum/update -y"  #use command module to update 
 
-###  How to use Ansible to manage changes, provision, automate and orchestrate systems
+###  Use Ansible group and host variables to manage changes to VM(s)
+     Ansible order of precedence for variables 
+          1. (group_vars)all  
+          2. (group_vars)GroupName
+          3. (host_vars)HostName    # highest preference
+     
      From command prompt run the following commands
      1. create inventory file "inventory-prod" consisting of hosts, groups and group variables of your system
      2. Run : ansible web1 -i inventory-prod -m ping           #ping individual server
@@ -49,4 +54,25 @@
          ansible webservers -i inventory_prod -m user -a "name={{username}} password=12345" --sudo  
      7.  Create a varibale for specific host in host_vars/web1. To create username in that specific host run :
          ansible webservers -i inventory_prod -m user -a "name={{username}} password=12345" --sudo  
+
+###  Use Ansible config files to manage changes to VM(s)
+     Ansible order of precedence for config settings
+          1. $ANSIBLE_CONFIG   #first preference given to environment variable
+          2. ./ansible.cfg
+          3. ~/.ansible.cfg
+          4./etc/ansible/ansible.cfg
+     
+     From command prompt run the following commands
+     1. Remove hosts from ~/.ssh/know_hosts and run
+        ansible web1 -i inventory_prod -m ping  ## will fail
+     2. create ansible.cfg (with host_key_checking=False) in local directory (same dir where inventory file exists) and run
+        ansible web1 -i inventory_prod -m ping  ## will pass and add host to know hosts file
+     3. Again remove hosts from ~/.ssh/know_hosts. Run export ANSIBLE_HOST_KEY_CHECKING=True and run
+        ansible web1 -i inventory_prod -m ping  ## will fail because exported variable took preference over ansible.cfg file
+
+###  Use Ansible behaviour parameter to run ansible on linux systems having python 3.x
+     In the inventory file add the following parameter. Here 192.168.33.50 has python 3.x and python2.7 is in /usr/bin/python2.7
+     192.168.33.50  ansible_python_interpreter=/usr/bin/python2.7
+
+
 
