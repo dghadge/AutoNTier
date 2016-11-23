@@ -32,5 +32,17 @@
 
 ###  How to use Ansible to manage changes, provision, automate and orchestrate systems
      From command prompt run the following commands
-     1. ssh vagrant acs  #to login to Ansible control server
-
+     1. create inventory file "inventory-prod" consisting of hosts, groups and group variables of your system
+     2. Run : ansible web1 -i inventory-prod -m ping           #ping individual server
+     3. Run : ansible webservers -i inventory-prod -m ping     #ping group of servers
+     4. Run : ansible datacenter -i inventory-prod -m ping     #ping entire datacenter
+     5. Create directory structure and following files within those directories 
+          ├── ansible.cfg
+          ├── group_vars           #directory to hold group level variables
+          │   ├── all
+          │   ├── db
+          │   └── webservers
+          ├── host_vars            #directory to hold host level files
+          │   └── web1
+          └── inventory_prod
+     6.  
