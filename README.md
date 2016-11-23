@@ -45,4 +45,8 @@
           ├── host_vars            #directory to hold host level files
           │   └── web1
           └── inventory_prod
-     6.  
+     6.  Create a varibale to entire group in groups_vars/all. To create username in all webservers run :
+         ansible webservers -i inventory_prod -m user -a "name={{username}} password=12345" --sudo  
+     7.  Create a varibale for specific host in host_vars/web1. To create username in that specific host run :
+         ansible webservers -i inventory_prod -m user -a "name={{username}} password=12345" --sudo  
+
