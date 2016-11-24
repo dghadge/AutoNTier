@@ -8,7 +8,7 @@
 ###  1. Create VM(s) and install Ansible
      From command prompt run the following commands
      1. git clone https://github.com/dghadge/AutoNTier.git
-     2. Create a new "Vagrantfile" or make changes to existing one depending on tour needs
+     2. Create a new "Vagrantfile" or make changes to existing one depending on your needs
      3. Run : vagrant up     #this will start VM(s) in Vagrant file
      4. Run : vboxmanage list runningvms   #to list running VM(s)
      5. Run : vagrant ssh <vm>  #vm=acs,web,db in our case
@@ -91,6 +91,11 @@
         ansible webservers:dbservers -i inventory_prod -m service -a "name=iptables state=stopped" --sudo
      7. http://192.168.33.20 should give http 200 
      
+###  7. Query system/VM details 
+     1. ansible web1 -i inventory_prod -m setup
+     2. ansible web1 -i inventory_prod -m setup -a "filter=ansible_eth*"
+     3. ansible web1 -i inventory_prod -m setup -a "filter=ansible_mount*"
+     4. ansible all  -i inventory_prod -m setup --tree ./system-details    ##details will be dumped into dir system-details
          
 
 
