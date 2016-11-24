@@ -74,5 +74,23 @@
      In the inventory file add the following parameter. Here 192.168.33.50 has python 3.x and python2.7 is in /usr/bin/python2.7
      192.168.33.50  ansible_python_interpreter=/usr/bin/python2.7
 
+###  6. Install and start web & db services
+     1. ansible-doc -l or ansible-doc <module_name> or ansible-doc -s <module_name>    ##list documenation on modules
+     2. Install webserver
+        ansible webservers -i inventory_prod -m apt -a "pkg=apache2 state=present update_cache=yes" --sudo
+        ansible webservers -i inventory_prod -m yum -a "name=httpd state=present" --sudo
+     3. Start webserver
+        ansible webservers -i inventory_prod -m service -a "name=apache2 enabled=yes state=started" --sudo
+        ansible webservers -i inventory_prod -m service -a "name=httpd enabled=yes state=started" --sudo
+     4. Install mysql server
+        ansible dbservers -i inventory_prod -m apt -a "pkg=mysql-server state=present update_cache=yes" --sudo
+        ansible dbservers -i inventory_prod -m yum -a "name=mysql-server state=present" --sudo
+     5. Start mysql server
+        ansible dbservers -i inventory_prod -m service -a "name=mysqld enabled=yes state=started" --sudo
+     6. Stop firewall
+        ansible webservers:dbservers -i inventory_prod -m service -a "name=iptables state=stopped" --sudo
+     7. http://192.168.33.20 should give http 200 
+     
+         
 
 
