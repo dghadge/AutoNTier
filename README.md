@@ -1,11 +1,11 @@
 ### AutoNTier : Automated N-Tier infrastructure creation using Ansible, Vagrant & VirtualBox
 
 ###  Technical Components
-     Vagrant     : environment creation & control      https://www.vagrantup.com & https://www.vagrantcloud.com
-     Virtual Box : hypervisor      https://www.virtualbox.org
-     Ansible     : change mgmt, provisioning, automation & orchestration        http://docs.ansible.com
+     Vagrant     : environment creation & control                         https://www.vagrantup.com & https://www.vagrantcloud.com
+     Virtual Box : hypervisor                                             https://www.virtualbox.org
+     Ansible     : change mgmt, provisioning, automation & orchestration  http://docs.ansible.com
 
-###  How to create VM(s) and install Ansible
+###  1. Create VM(s) and install Ansible
      From command prompt run the following commands
      1. git clone https://github.com/dghadge/AutoNTier.git
      2. Create a new "Vagrantfile" or make changes to existing one depending on tour needs
@@ -15,12 +15,12 @@
      6. Run : sudo apt-get install ansible  #On Debian systems
      7. Run : sudo yum install epel-release; sudo yum install ansible #On CentOS systems
 
-###  Virtualbox VM(s) created using Vagrant
+###  1.1 Virtualbox VM(s) created using Vagrant
      acs : 192.168.33.10  ##Ansible Control Server
      web : 192.168.33.20  ##web server
      db  : 192.168.33.30  ##database host
 
-###  Setup Ansible on the VM(s) created in previous steps
+###  2. Setup Ansible on the VM(s) created in previous steps
      From command prompt run the following commands
      1. ssh vagrant acs  #to login to Ansible control server
      2. ssh vagrant@ip-address-of-web-server #this will add this host fingerprint to list of know hosts
@@ -30,7 +30,7 @@
      6. ansible 192.168.33.20 -i inventory -u vagrant -m ping -k -vvv #verbose mode
      7. ansible 192.168.33.20 -i inventory -u vagrant -m command -a "/usr/sbin/yum/update -y"  #use command module to update 
 
-###  Use Ansible group and host variables to manage changes to VM(s)
+###  3. Use Ansible group and host variables to manage changes to VM(s)
      Ansible order of precedence for variables 
           1. (group_vars)all  
           2. (group_vars)GroupName
@@ -55,7 +55,7 @@
      7.  Create a varibale for specific host in host_vars/web1. To create username in that specific host run :
          ansible webservers -i inventory_prod -m user -a "name={{username}} password=12345" --sudo  
 
-###  Use Ansible config files to manage changes to VM(s)
+###  4. Use Ansible config files to manage changes to VM(s)
      Ansible order of precedence for config settings
           1. $ANSIBLE_CONFIG   #first preference given to environment variable
           2. ./ansible.cfg
@@ -70,7 +70,7 @@
      3. Again remove hosts from ~/.ssh/know_hosts. Run export ANSIBLE_HOST_KEY_CHECKING=True and run
         ansible web1 -i inventory_prod -m ping  ## will fail because exported variable took preference over ansible.cfg file
 
-###  Use Ansible behaviour parameter to run ansible on linux systems having python 3.x
+###  5. Use Ansible behaviour parameter to run ansible on linux systems having python 3.x
      In the inventory file add the following parameter. Here 192.168.33.50 has python 3.x and python2.7 is in /usr/bin/python2.7
      192.168.33.50  ansible_python_interpreter=/usr/bin/python2.7
 
