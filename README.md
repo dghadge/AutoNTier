@@ -15,7 +15,7 @@
      6. Run : sudo apt-get install ansible  #On Debian systems
      7. Run : sudo yum install epel-release; sudo yum install ansible #On CentOS systems
 
-###  1.1 Virtualbox VM(s) created using Vagrant
+###  Virtualbox VM(s) created using Vagrant
      acs : 192.168.33.10  ##Ansible Control Server
      web : 192.168.33.20  ##web server
      db  : 192.168.33.30  ##database host
